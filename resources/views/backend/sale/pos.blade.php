@@ -39,21 +39,21 @@
             $index_permission_active = DB::table('role_has_permissions')
                 ->where([['permission_id', $index_permission->id], ['role_id', $role->id]])
                 ->first();
-            
+
             $print_barcode = DB::table('permissions')
                 ->where('name', 'print_barcode')
                 ->first();
             $print_barcode_active = DB::table('role_has_permissions')
                 ->where([['permission_id', $print_barcode->id], ['role_id', $role->id]])
                 ->first();
-            
+
             $stock_count = DB::table('permissions')
                 ->where('name', 'stock_count')
                 ->first();
             $stock_count_active = DB::table('role_has_permissions')
                 ->where([['permission_id', $stock_count->id], ['role_id', $role->id]])
                 ->first();
-            
+
             $adjustment = DB::table('permissions')
                 ->where('name', 'adjustment')
                 ->first();
@@ -137,14 +137,14 @@
             $index_permission_active = DB::table('role_has_permissions')
                 ->where([['permission_id', $index_permission->id], ['role_id', $role->id]])
                 ->first();
-            
+
             $gift_card_permission = DB::table('permissions')
                 ->where('name', 'gift_card')
                 ->first();
             $gift_card_permission_active = DB::table('role_has_permissions')
                 ->where([['permission_id', $gift_card_permission->id], ['role_id', $role->id]])
                 ->first();
-            
+
             $coupon_permission = DB::table('permissions')
                 ->where('name', 'coupon')
                 ->first();
@@ -316,28 +316,28 @@
             $index_permission_active = DB::table('role_has_permissions')
                 ->where([['permission_id', $index_permission->id], ['role_id', $role->id]])
                 ->first();
-            
+
             $money_transfer_permission = DB::table('permissions')
                 ->where('name', 'money-transfer')
                 ->first();
             $money_transfer_permission_active = DB::table('role_has_permissions')
                 ->where([['permission_id', $money_transfer_permission->id], ['role_id', $role->id]])
                 ->first();
-            
+
             $balance_sheet_permission = DB::table('permissions')
                 ->where('name', 'balance-sheet')
                 ->first();
             $balance_sheet_permission_active = DB::table('role_has_permissions')
                 ->where([['permission_id', $balance_sheet_permission->id], ['role_id', $role->id]])
                 ->first();
-            
+
             $account_statement_permission = DB::table('permissions')
                 ->where('name', 'account-statement')
                 ->first();
             $account_statement_permission_active = DB::table('role_has_permissions')
                 ->where([['permission_id', $account_statement_permission->id], ['role_id', $role->id]])
                 ->first();
-            
+
             ?>
             @if ($index_permission_active || $balance_sheet_permission_active || $account_statement_permission_active)
                 <li class=""><a href="#account" aria-expanded="false" data-toggle="collapse"> <i
@@ -577,7 +577,7 @@
                     ->join('role_has_permissions', 'permissions.id', '=', 'role_has_permissions.permission_id')
                     ->where([['permissions.name', 'user-report'], ['role_id', $role->id]])
                     ->first();
-                
+
                 $customer_report_active = DB::table('permissions')
                     ->join('role_has_permissions', 'permissions.id', '=', 'role_has_permissions.permission_id')
                     ->where([['permissions.name', 'customer-report'], ['role_id', $role->id]])
@@ -761,77 +761,77 @@
                     $warehouse_permission_active = DB::table('role_has_permissions')
                         ->where([['permission_id', $warehouse_permission->id], ['role_id', $role->id]])
                         ->first();
-                    
+
                     $customer_group_permission = DB::table('permissions')
                         ->where('name', 'customer_group')
                         ->first();
                     $customer_group_permission_active = DB::table('role_has_permissions')
                         ->where([['permission_id', $customer_group_permission->id], ['role_id', $role->id]])
                         ->first();
-                    
+
                     $brand_permission = DB::table('permissions')
                         ->where('name', 'brand')
                         ->first();
                     $brand_permission_active = DB::table('role_has_permissions')
                         ->where([['permission_id', $brand_permission->id], ['role_id', $role->id]])
                         ->first();
-                    
+
                     $unit_permission = DB::table('permissions')
                         ->where('name', 'unit')
                         ->first();
                     $unit_permission_active = DB::table('role_has_permissions')
                         ->where([['permission_id', $unit_permission->id], ['role_id', $role->id]])
                         ->first();
-                    
+
                     $tax_permission = DB::table('permissions')
                         ->where('name', 'tax')
                         ->first();
                     $tax_permission_active = DB::table('role_has_permissions')
                         ->where([['permission_id', $tax_permission->id], ['role_id', $role->id]])
                         ->first();
-                    
+
                     $general_setting_permission = DB::table('permissions')
                         ->where('name', 'general_setting')
                         ->first();
                     $general_setting_permission_active = DB::table('role_has_permissions')
                         ->where([['permission_id', $general_setting_permission->id], ['role_id', $role->id]])
                         ->first();
-                    
+
                     $mail_setting_permission = DB::table('permissions')
                         ->where('name', 'mail_setting')
                         ->first();
                     $mail_setting_permission_active = DB::table('role_has_permissions')
                         ->where([['permission_id', $mail_setting_permission->id], ['role_id', $role->id]])
                         ->first();
-                    
+
                     $sms_setting_permission = DB::table('permissions')
                         ->where('name', 'sms_setting')
                         ->first();
                     $sms_setting_permission_active = DB::table('role_has_permissions')
                         ->where([['permission_id', $sms_setting_permission->id], ['role_id', $role->id]])
                         ->first();
-                    
+
                     $create_sms_permission = DB::table('permissions')
                         ->where('name', 'create_sms')
                         ->first();
                     $create_sms_permission_active = DB::table('role_has_permissions')
                         ->where([['permission_id', $create_sms_permission->id], ['role_id', $role->id]])
                         ->first();
-                    
+
                     $pos_setting_permission = DB::table('permissions')
                         ->where('name', 'pos_setting')
                         ->first();
                     $pos_setting_permission_active = DB::table('role_has_permissions')
                         ->where([['permission_id', $pos_setting_permission->id], ['role_id', $role->id]])
                         ->first();
-                    
+
                     $hrm_setting_permission = DB::table('permissions')
                         ->where('name', 'hrm_setting')
                         ->first();
                     $hrm_setting_permission_active = DB::table('role_has_permissions')
                         ->where([['permission_id', $hrm_setting_permission->id], ['role_id', $role->id]])
                         ->first();
-                    
+
                     $reward_point_setting_permission = DB::table('permissions')
                         ->where('name', 'reward_point_setting')
                         ->first();
@@ -944,7 +944,7 @@
                                 } else {
                                     $keybord_active = 0;
                                 }
-                                
+
                                 $customer_active = DB::table('permissions')
                                     ->join('role_has_permissions', 'permissions.id', '=', 'role_has_permissions.permission_id')
                                     ->where([['permissions.name', 'customers-add'], ['role_id', \Auth::user()->role_id]])
@@ -1022,7 +1022,7 @@
                                                             @foreach ($lims_customer_list as $customer)
                                                                 @php
                                                                     $deposit[$customer->id] = $customer->deposit - $customer->expense;
-                                                                    
+
                                                                     $points[$customer->id] = $customer->points;
                                                                 @endphp
                                                                 <option value="{{ $customer->id }}">
@@ -1044,7 +1044,7 @@
                                                             @foreach ($lims_customer_list as $customer)
                                                                 @php
                                                                     $deposit[$customer->id] = $customer->deposit - $customer->expense;
-                                                                    
+
                                                                     $points[$customer->id] = $customer->points;
                                                                 @endphp
                                                                 <option value="{{ $customer->id }}">
@@ -1176,14 +1176,14 @@
                         </div>
                         <div class="payment-options">
 
-                            @if (in_array('card', $options))
+                            {{-- @if (in_array('card', $options))
                                 <div class="column-5">
                                     <button style="background: #0984e3" type="button"
                                         class="btn btn-sm btn-custom payment-btn" data-toggle="modal"
                                         data-target="#add-payment" id="credit-card-btn"><i class="fa fa-credit-card"></i>
                                         {{ trans('file.Card') }}</button>
                                 </div>
-                            @endif
+                            @endif --}}
                             @if (in_array('cash', $options))
                                 <div class="column-5">
                                     <button style="background: #00cec9" type="button"
@@ -1200,22 +1200,44 @@
                                         {{ trans('file.EVC') }}</button>
                                 </div>
                             @endif
-                            @if (in_array('paypal', $options) &&
-                                    strlen($lims_pos_setting_data->paypal_live_api_username) > 0 &&
-                                    strlen($lims_pos_setting_data->paypal_live_api_password) > 0 &&
-                                    strlen($lims_pos_setting_data->paypal_live_api_secret) > 0)
+                            @if (in_array('edahab', $options))
+                                <div class="column-5">
+                                    <button style="background: #cece00; color:black" type="button"
+                                        class="btn btn-sm btn-custom payment-btn" data-toggle="modal"
+                                        data-target="#add-payment" id="edahab-btn"><i class="fa fa-money"></i>
+                                        {{ trans('file.eDahab') }}</button>
+                                </div>
+                            @endif
+                            @if (in_array('wallet', $options))
+                                <div class="column-5">
+                                    <button style="background: #3ace00;" type="button"
+                                        class="btn btn-sm btn-custom payment-btn" data-toggle="modal"
+                                        data-target="#add-payment" id="wallet-btn"><i class="fa fa-wallet"></i>
+                                        {{ trans('file.Wallet') }}</button>
+                                </div>
+                            @endif
+
+                            @if (in_array('other', $options))
+                            <div class="column-5">
+                                <button style="background: #3ace00;" type="button"
+                                    class="btn btn-sm btn-custom payment-btn" data-toggle="modal"
+                                    data-target="#add-payment" id="other-btn"><i class="fa fa-money"></i>
+                                    {{ trans('file.Other') }}</button>
+                            </div>
+                        @endif
+
+                            {{-- @if (in_array('paypal', $options) && strlen($lims_pos_setting_data->paypal_live_api_username) > 0 && strlen($lims_pos_setting_data->paypal_live_api_password) > 0 && strlen($lims_pos_setting_data->paypal_live_api_secret) > 0)
                                 <div class="column-5">
                                     <button style="background-color: #213170" type="button"
                                         class="btn btn-sm btn-custom payment-btn" data-toggle="modal"
                                         data-target="#add-payment" id="paypal-btn"><i class="fa fa-paypal"></i>
                                         {{ trans('file.PayPal') }}</button>
                                 </div>
-                            @endif
-                            <div class="column-5">
-                                <button style="background-color: #e28d02" type="button" class="btn btn-sm btn-custom"
-                                    id="draft-btn"><i class="dripicons-flag"></i> {{ trans('file.Draft') }}</button>
-                            </div>
-                            @if (in_array('cheque', $options))
+                            @endif --}}
+
+
+
+                            {{-- @if (in_array('cheque', $options))
                                 <div class="column-5">
                                     <button style="background-color: #fd7272" type="button"
                                         class="btn btn-sm btn-custom payment-btn" data-toggle="modal"
@@ -1238,7 +1260,8 @@
                                         data-target="#add-payment" id="deposit-btn"><i class="fa fa-university"></i>
                                         {{ trans('file.Deposit') }}</button>
                                 </div>
-                            @endif
+                            @endif --}}
+
                             @if ($lims_reward_point_setting_data->is_active)
                                 <div class="column-5">
                                     <button style="background-color: #319398" type="button"
@@ -1247,11 +1270,17 @@
                                         {{ trans('file.Points') }}</button>
                                 </div>
                             @endif
+                            <div class="column-5"></div>
+                            <div class="column-5">
+                                <button style="background-color: #e28d02" type="button" class="btn btn-sm btn-custom"
+                                    id="draft-btn"><i class="dripicons-flag"></i> {{ trans('file.Draft') }}</button>
+                            </div>
                             <div class="column-5">
                                 <button style="background-color: #d63031;" type="button" class="btn btn-sm btn-custom"
                                     id="cancel-btn" onclick="return confirmCancel()"><i class="fa fa-close"></i>
                                     {{ trans('file.Cancel') }}</button>
                             </div>
+
                             <div class="column-5">
                                 <button style="background-color: #ffc107;" type="button" class="btn btn-sm btn-custom"
                                     data-toggle="modal" data-target="#recentTransaction"><i class="dripicons-clock"></i>
@@ -1270,8 +1299,8 @@
                                 <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span
                                         aria-hidden="true"><i class="dripicons-cross"></i></span></button>
                             </div>
-                            <div class="modal-body">
-                                <div class="row">
+                            <div class="modal-body ">
+                                <div class="row p-3">
                                     <div class="col-md-10">
                                         <div class="row">
                                             <div class="col-md-6 mt-1">
@@ -1293,26 +1322,31 @@
                                                 <input type="hidden" name="paid_by_id">
                                                 <label>{{ trans('file.Paid By') }}</label>
                                                 <select name="paid_by_id_select" class="form-control selectpicker">
-                                                    @if (in_array('evc', $options))
-                                                        <option value="1">EVC</option>
-                                                    @endif
                                                     @if (in_array('cash', $options))
-                                                        <option value="2">Cash</option>
+                                                        <option value="1">CASH</option>
+                                                    @endif
+                                                    @if (in_array('evc', $options))
+                                                        <option value="2">EVC</option>
+                                                    @endif
+                                                    @if (in_array('edahab', $options))
+                                                        <option value="3">eDahab</option>
                                                     @endif
 
-                                                    @if (in_array('gift_card', $options))
-                                                        <option value="2">Gift Card</option>
+                                                    @if (in_array('wallet', $options))
+                                                        <option value="4">Premier Wallet</option>
                                                     @endif
-                                                    @if (in_array('card', $options))
-                                                        <option value="3">Credit Card</option>
+
+                                                    @if (in_array('other', $options))
+                                                    <option value="5">Other</option>
+                                                @endif
+
+                                                    {{-- @if (in_array('card', $options))
+                                                        <option value="4">Credit Card</option>
                                                     @endif
                                                     @if (in_array('cheque', $options))
-                                                        <option value="4">Cheque</option>
+                                                        <option value="5">Cheque</option>
                                                     @endif
-                                                    @if (in_array('paypal', $options) &&
-                                                            strlen(env('PAYPAL_LIVE_API_USERNAME')) > 0 &&
-                                                            strlen(env('PAYPAL_LIVE_API_PASSWORD')) > 0 &&
-                                                            strlen(env('PAYPAL_LIVE_API_SECRET')) > 0)
+                                                    @if (in_array('paypal', $options) && strlen(env('PAYPAL_LIVE_API_USERNAME')) > 0 && strlen(env('PAYPAL_LIVE_API_PASSWORD')) > 0 && strlen(env('PAYPAL_LIVE_API_SECRET')) > 0)
                                                         <option value="5">Paypal</option>
                                                     @endif
                                                     @if (in_array('deposit', $options))
@@ -1320,7 +1354,7 @@
                                                     @endif
                                                     @if ($lims_reward_point_setting_data->is_active)
                                                         <option value="7">Points</option>
-                                                    @endif
+                                                    @endif --}}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-12 mt-3">
@@ -1354,7 +1388,7 @@
                                                 <textarea rows="3" class="form-control" name="staff_note"></textarea>
                                             </div>
                                         </div>
-                                        <div class="mt-3">
+                                        <div>
                                             <button id="submit-btn" type="button"
                                                 class="btn btn-primary">{{ trans('file.submit') }}</button>
                                         </div>
@@ -1504,11 +1538,11 @@
                                     $general_setting_permission_active = DB::table('role_has_permissions')
                                         ->where([['permission_id', $general_setting_permission->id], ['role_id', Auth::user()->role_id]])
                                         ->first();
-                                    
+
                                     $pos_setting_permission = DB::table('permissions')
                                         ->where('name', 'pos_setting')
                                         ->first();
-                                    
+
                                     $pos_setting_permission_active = DB::table('role_has_permissions')
                                         ->where([['permission_id', $pos_setting_permission->id], ['role_id', Auth::user()->role_id]])
                                         ->first();
@@ -1519,6 +1553,12 @@
                                                 title="{{ trans('file.POS Setting') }}"><i
                                                     class="dripicons-gear"></i></a> </li>
                                     @endif
+                                    <li class="nav-item">
+                                        <a href="{{ route('sale.pos_customer_view') }}" blank data-toggle="tooltip"
+                                        target="_blank"
+                                            title="Customer View"><i
+                                                class="dripicons-device-desktop"></i></a>
+                                    </li>
                                     <li class="nav-item">
                                         <a href="{{ route('sales.printLastReciept') }}" data-toggle="tooltip"
                                             title="{{ trans('file.Print Last Reciept') }}"><i
@@ -1536,7 +1576,7 @@
                                     $today_sale_permission_active = DB::table('role_has_permissions')
                                         ->where([['permission_id', $today_sale_permission->id], ['role_id', Auth::user()->role_id]])
                                         ->first();
-                                    
+
                                     $today_profit_permission = DB::table('permissions')
                                         ->where('name', 'today_profit')
                                         ->first();
@@ -3156,97 +3196,111 @@
             $('.payment-form').submit();
         });
 
-        $("#gift-card-btn").on("click", function() {
-            $('select[name="paid_by_id_select"]').val(2);
-            $('.selectpicker').selectpicker('refresh');
-            $('div.qc').hide();
-            giftCard();
-        });
+        // $("#gift-card-btn").on("click", function() {
+        //     $('select[name="paid_by_id_select"]').val(3);
+        //     $('.selectpicker').selectpicker('refresh');
+        //     $('div.qc').hide();
+        //     giftCard();
+        // });
 
-        $("#credit-card-btn").on("click", function() {
-            $('select[name="paid_by_id_select"]').val(3);
-            $('.selectpicker').selectpicker('refresh');
-            $('div.qc').hide();
-            creditCard();
-        });
+        // $("#credit-card-btn").on("click", function() {
+        //     $('select[name="paid_by_id_select"]').val(4);
+        //     $('.selectpicker').selectpicker('refresh');
+        //     $('div.qc').hide();
+        //     creditCard();
+        // });
 
-        $("#cheque-btn").on("click", function() {
-            $('select[name="paid_by_id_select"]').val(4);
-            $('.selectpicker').selectpicker('refresh');
-            $('div.qc').hide();
-            cheque();
-        });
+        // $("#cheque-btn").on("click", function() {
+        //     $('select[name="paid_by_id_select"]').val(5);
+        //     $('.selectpicker').selectpicker('refresh');
+        //     $('div.qc').hide();
+        //     cheque();
+        // });
 
         $("#cash-btn").on("click", function() {
-            $('select[name="paid_by_id_select"]').val(2);
-            $('.selectpicker').selectpicker('refresh');
-            $('div.qc').show();
-            hide();
-        });
-
-        $("#evc-btn").on("click", function() {
             $('select[name="paid_by_id_select"]').val(1);
             $('.selectpicker').selectpicker('refresh');
             $('div.qc').show();
             hide();
         });
 
-        $("#paypal-btn").on("click", function() {
+        $("#evc-btn").on("click", function() {
+            $('select[name="paid_by_id_select"]').val(2);
+            $('.selectpicker').selectpicker('refresh');
+            $('div.qc').show();
+            hide();
+        });
+
+        $("#edahab-btn").on("click", function() {
+            $('select[name="paid_by_id_select"]').val(3);
+            $('.selectpicker').selectpicker('refresh');
+            $('div.qc').hide();
+            hide();
+        });
+
+        $("#wallet-btn").on("click", function() {
+            $('select[name="paid_by_id_select"]').val(4);
+            $('.selectpicker').selectpicker('refresh');
+            $('div.qc').hide();
+            hide();
+        });
+
+        $("#other-btn").on("click", function() {
             $('select[name="paid_by_id_select"]').val(5);
             $('.selectpicker').selectpicker('refresh');
             $('div.qc').hide();
             hide();
         });
 
-        $("#deposit-btn").on("click", function() {
-            $('select[name="paid_by_id_select"]').val(6);
-            $('.selectpicker').selectpicker('refresh');
-            $('div.qc').hide();
-            hide();
-            deposits();
-        });
+        // $("#deposit-btn").on("click", function() {
+        //     $('select[name="paid_by_id_select"]').val(7);
+        //     $('.selectpicker').selectpicker('refresh');
+        //     $('div.qc').hide();
+        //     hide();
+        //     deposits();
+        // });
 
-        $("#point-btn").on("click", function() {
-            $('select[name="paid_by_id_select"]').val(7);
-            $('.selectpicker').selectpicker('refresh');
-            $('div.qc').hide();
-            hide();
-            pointCalculation();
-        });
+        // $("#point-btn").on("click", function() {
+        //     $('select[name="paid_by_id_select"]').val(8);
+        //     $('.selectpicker').selectpicker('refresh');
+        //     $('div.qc').hide();
+        //     hide();
+        //     pointCalculation();
+        // });
 
-        $('select[name="paid_by_id_select"]').on("change", function() {
-            var id = $(this).val();
-            $(".payment-form").off("submit");
-            if (id == 2) {
-                $('div.qc').hide();
-                giftCard();
-            } else if (id == 3) {
-                $('div.qc').hide();
-                creditCard();
-            } else if (id == 4) {
-                $('div.qc').hide();
-                cheque();
-            } else {
-                hide();
-                if (id == 1)
-                    $('div.qc').show();
-                else if (id == 6) {
-                    $('div.qc').hide();
-                    deposits();
-                } else if (id == 7) {
-                    $('div.qc').hide();
-                    pointCalculation();
-                }
-            }
-        });
+        // $('select[name="paid_by_id_select"]').on("change", function() {
+        //     var id = $(this).val();
+        //     $(".payment-form").off("submit");
+        //     if (id == 3) {
+        //         $('div.qc').hide();
+        //         giftCard();
+        //     } else if (id == 4) {
+        //         $('div.qc').hide();
+        //         creditCard();
+        //     } else if (id == 5) {
+        //         $('div.qc').hide();
+        //         cheque();
+        //     } else {
+        //         hide();
+        //         if (id == 1)
+        //             $('div.qc').show();
+        //         else if (id == 7) {
+        //             $('div.qc').hide();
+        //             deposits();
+        //         } else if (id == 8) {
+        //             $('div.qc').hide();
+        //             pointCalculation();
+        //         }
+        //     }
+        // });
 
-        $('#add-payment select[name="gift_card_id_select"]').on("change", function() {
-            var balance = gift_card_amount[$(this).val()] - gift_card_expense[$(this).val()];
-            $('#add-payment input[name="gift_card_id"]').val($(this).val());
-            if ($('input[name="paid_amount"]').val() > balance) {
-                alert('Amount exceeds card balance! Gift Card balance: ' + balance);
-            }
-        });
+        // $('#add-payment select[name="gift_card_id_select"]').on("change", function() {
+        //     var balance = gift_card_amount[$(this).val()] - gift_card_expense[$(this).val()];
+        //     $('#add-payment input[name="gift_card_id"]').val($(this).val());
+        //     if ($('input[name="paid_amount"]').val() > balance) {
+        //         alert('Amount exceeds card balance! Gift Card balance: ' + balance);
+        //     }
+        // });
 
         $('#add-payment input[name="paying_amount"]').on("input", function() {
             change($(this).val(), $('input[name="paid_amount"]').val());
@@ -3261,18 +3315,18 @@
                 $(this).val('');
             }
 
-            change($('input[name="paying_amount"]').val(), $(this).val());
-            var id = $('select[name="paid_by_id_select"]').val();
-            if (id == 2) {
-                var balance = gift_card_amount[$("#gift_card_id_select").val()] - gift_card_expense[$(
-                    "#gift_card_id_select").val()];
-                if ($(this).val() > balance)
-                    alert('Amount exceeds card balance! Gift Card balance: ' + balance);
-            } else if (id == 6) {
-                if ($('input[name="paid_amount"]').val() > deposit[$('#customer_id').val()])
-                    alert('Amount exceeds customer deposit! Customer deposit : ' + deposit[$('#customer_id')
-                        .val()]);
-            }
+            // change($('input[name="paying_amount"]').val(), $(this).val());
+            // var id = $('select[name="paid_by_id_select"]').val();
+            // if (id == 2) {
+            //     var balance = gift_card_amount[$("#gift_card_id_select").val()] - gift_card_expense[$(
+            //         "#gift_card_id_select").val()];
+            //     if ($(this).val() > balance)
+            //         alert('Amount exceeds card balance! Gift Card balance: ' + balance);
+            // } else if (id == 6) {
+            //     if ($('input[name="paid_amount"]').val() > deposit[$('#customer_id').val()])
+            //         alert('Amount exceeds customer deposit! Customer deposit : ' + deposit[$('#customer_id')
+            //             .val()]);
+            // }
         });
 
         $('.transaction-btn-plus').on("click", function() {

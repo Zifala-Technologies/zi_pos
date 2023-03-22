@@ -69,6 +69,17 @@
             align-content: center;
         }
 
+        .centered>* {
+            margin: 3px;
+        }
+
+        .invoice_info {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            row-gap: 10px;
+        }
+
         small {
             font-size: 11px;
         }
@@ -79,12 +90,15 @@
                 line-height: 20px;
             }
 
-            #receipt-data {
-                page-break-after: always;
+
+
+            .extra-invoice {
+                display: block !important;
+
             }
 
-            #receipt-data-for-kitchen {
-                display: block !important;
+            .break-after {
+                page-break-after: always;
             }
 
             td,
@@ -115,7 +129,6 @@
 </head>
 
 <body>
-
     <div style="max-width:400px;margin:0 auto">
         @if (preg_match('~[0-9]~', url()->previous()))
             @php $url = '../../pos'; @endphp
@@ -133,8 +146,8 @@
             </table>
             <br>
         </div>
-
-        <div id="receipt-data">
+        {{-- Default User Invoice --}}
+        <div id="default-invoice">
             <div class="centered">
                 @if ($general_setting->site_logo)
                     <img src="{{ url('logo', $general_setting->site_logo) }}" height="42" width="50"
@@ -142,22 +155,34 @@
                 @endif
 
                 <h2>{{ $lims_biller_data->company_name }}</h2>
-
-                <p> {{ $lims_warehouse_data->address }}
-                    <br>{{ trans('file.Phone Number') }}: {{ $lims_warehouse_data->phone }}
-                </p>
+                {!! $lims_pos_setting_data->invoice_info !!}
             </div>
-            <p>{{ trans('file.Date') }}:
-                {{ date($general_setting->date_format, strtotime($lims_sale_data->created_at->toDateString())) }}<br>
-                {{-- {{trans('file.reference')}}: {{$lims_sale_data->reference_no}}<br> --}}
-                {{ trans('file.customer') }}: {{ $lims_customer_data->name }}
-            </p>
+            <div class="invoice_info">
+                <div>
+                    {{ trans('file.Invoice id') }}:
+                    <b>{{ $lims_sale_data->id }} </b><br>
+                    {{ trans('file.customer') }}: {{ $lims_customer_data->name }}
+                </div>
+                <div style="text-align: right">
+                    {{ trans('file.Date') }}:
+                    {{ date($general_setting->date_format, strtotime($lims_sale_data->created_at->toDateString())) }}<br>
+                </div>
+            </div>
             <table class="table-data">
                 <tbody>
                     <?php $total_product_tax = 0; ?>
                     @foreach ($lims_product_sale_data as $key => $product_sale_data)
                         <?php
                         $lims_product_data = \App\Product::find($product_sale_data->product_id);
+
+                        if ($lims_product_data->category_id == $lims_pos_setting_data->printer_one_category_id) {
+                            $cat_one= true;
+                        } elseif ($lims_product_data->category_id == $lims_pos_setting_data->printer_two_category_id) {
+                            $cat_two= true;
+                        } elseif ($lims_product_data->category_id == $lims_pos_setting_data->printer_three_category_id) {
+                            $cat_three= true;
+                        }
+
                         if ($product_sale_data->variant_id) {
                             $variant_data = \App\Variant::find($product_sale_data->variant_id);
                             $product_name = $lims_product_data->name . ' [' . $variant_data->name . ']';
@@ -170,7 +195,7 @@
                             $product_name = $lims_product_data->name;
                             $product_category = $lims_product_data->category->name;
                         }
-                        
+
                         if ($product_sale_data->imei_number) {
                             $product_name .= '<br>' . trans('IMEI or Serial Numbers') . ': ' . $product_sale_data->imei_number;
                         }
@@ -278,105 +303,303 @@
                         </tr>
                     @endforeach
                     <tr>
-                        <td class="centered" colspan="3">{{ trans('Thank you. Please come again') }}</td>
+                        <td class="centered" colspan="3">{{ $lims_pos_setting_data->invoice_info_footer }}</td>
                     </tr>
 
                 </tbody>
             </table>
-            <div class="centered" style="margin:20px 0 50px">
+            <div class="centered" style="margin:10px 0 10px">
                 <small>
                     {{ trans('file.Developed By') }} ZifalaTech</small>
             </div>
         </div>
         <br>
-        <div id="receipt-data-for-kitchen" style="display: none">
-            <div class="centered">
-
-
-                <h2>{{ $lims_biller_data->company_name }}</h2>
-
-                <p> {{ $lims_warehouse_data->address }}
+        {{-- Extra Invoice One --}}
+        @if ($lims_pos_setting_data->printer_one_category_id != 0 && $cat_one)
+            <div class="break-after"></div>
+            <div class="extra-invoice" id="extra-invoice-one" style="display: none">
+                <div class="centered">
+                    <h2>{{ $lims_biller_data->company_name }}</h2>
+                    <p> {{ trans('file.Invoice id') }}:
+                        <b>{{ $lims_sale_data->id }} </b><br>
+                    </p>
+                </div>
+                <p>{{ trans('file.Date') }}:
+                    {{ date($general_setting->date_format, strtotime($lims_sale_data->created_at->toDateString())) }}<br>
                 </p>
+                <table class="table-data">
+                    <tbody>
+                        <?php $total_product_tax = 0; ?>
+                        @foreach ($lims_product_sale_data as $key => $product_sale_data)
+                            <?php
+                            $lims_product_data = \App\Product::find($product_sale_data->product_id);
+                            if ($lims_product_data->category_id != $lims_pos_setting_data->printer_one_category_id) {
+                                continue;
+                            }
+                            if ($product_sale_data->variant_id) {
+                                $variant_data = \App\Variant::find($product_sale_data->variant_id);
+                                $product_name = $lims_product_data->name . ' [' . $variant_data->name . ']';
+                            } elseif ($product_sale_data->product_batch_id) {
+                                $product_batch_data = \App\ProductBatch::select('batch_no')->find($product_sale_data->product_batch_id);
+                                $product_name = $lims_product_data->name . ' [' . trans('file.Batch No') . ':' . $product_batch_data->batch_no . ']';
+                            } else {
+                                $product_name = $lims_product_data->name;
+                            }
+
+                            if ($product_sale_data->imei_number) {
+                                $product_name .= '<br>' . trans('IMEI or Serial Numbers') . ': ' . $product_sale_data->imei_number;
+                            }
+                            ?>
+                            <tr>
+                                <td colspan="2">
+                                    {!! $product_name !!}
+                                </td>
+                                <td style="text-align:right;vertical-align:bottom">
+                                    {{ $product_sale_data->qty }} </td>
+                            </tr>
+                        @endforeach
+
+                        <!-- <tfoot> -->
+
+                        @if ($general_setting->invoice_format == 'gst' && $general_setting->state == 1)
+                            <tr>
+                                <td colspan="2">IGST</td>
+                                <td style="text-align:right">
+                                    {{ number_format((float) $total_product_tax, 2, '.', '') }}
+                                </td>
+                            </tr>
+                        @elseif($general_setting->invoice_format == 'gst' && $general_setting->state == 2)
+                            <tr>
+                                <td colspan="2">SGST</td>
+                                <td style="text-align:right">
+                                    {{ number_format((float) ($total_product_tax / 2), 2, '.', '') }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">CGST</td>
+                                <td style="text-align:right">
+                                    {{ number_format((float) ($total_product_tax / 2), 2, '.', '') }}</td>
+                            </tr>
+                        @endif
+                        @if ($lims_sale_data->order_tax)
+                            <tr>
+                                <th colspan="2" style="text-align:left">{{ trans('file.Order Tax') }}</th>
+                                <th style="text-align:right">
+                                    {{ number_format((float) $lims_sale_data->order_tax, 2, '.', '') }}</th>
+                            </tr>
+                        @endif
+                        @if ($lims_sale_data->order_discount)
+                            <tr>
+                                <th colspan="2" style="text-align:left">{{ trans('file.Order Discount') }}</th>
+                                <th style="text-align:right">
+                                    {{ number_format((float) $lims_sale_data->order_discount, 2, '.', '') }}</th>
+                            </tr>
+                        @endif
+
+                    </tbody>
+                    <!-- </tfoot> -->
+                </table>
+
+                <div class="centered" style="margin:10px 0 50px">
+                    <small>
+                        {{ trans('file.Developed By') }} ZifalaTech</small>
+                </div>
             </div>
-            <p>{{ trans('file.Date') }}:
-                {{ date($general_setting->date_format, strtotime($lims_sale_data->created_at->toDateString())) }}<br>
-
-            </p>
-            <table class="table-data">
-                <tbody>
-                    <?php $total_product_tax = 0; ?>
-                    @foreach ($lims_product_sale_data as $key => $product_sale_data)
-                        <?php
-                        $lims_product_data = \App\Product::find($product_sale_data->product_id);
-                        if ($product_sale_data->variant_id) {
-                            $variant_data = \App\Variant::find($product_sale_data->variant_id);
-                            $product_name = $lims_product_data->name . ' [' . $variant_data->name . ']';
-                        } elseif ($product_sale_data->product_batch_id) {
-                            $product_batch_data = \App\ProductBatch::select('batch_no')->find($product_sale_data->product_batch_id);
-                            $product_name = $lims_product_data->name . ' [' . trans('file.Batch No') . ':' . $product_batch_data->batch_no . ']';
-                        } else {
-                            $product_name = $lims_product_data->name;
-                        }
-                        
-                        if ($product_sale_data->imei_number) {
-                            $product_name .= '<br>' . trans('IMEI or Serial Numbers') . ': ' . $product_sale_data->imei_number;
-                        }
-                        ?>
-                        <tr>
-                            <td colspan="2">
-                                {!! $product_name !!}
+        @endif
+        {{-- Extra Invoice Two --}}
+        @if ($lims_pos_setting_data->printer_two_category_id != 0 && $cat_two)
+            <div class="break-after"></div>
+            <div class="extra-invoice" id="extra-invoice-two" style="display: none">
+                <div class="centered">
 
 
-                            </td>
-                            <td style="text-align:right;vertical-align:bottom">
-                                {{ $product_sale_data->qty }} </td>
-                        </tr>
-                    @endforeach
+                    <h2>{{ $lims_biller_data->company_name }}</h2>
 
-                    <!-- <tfoot> -->
+                    <p> {{ trans('file.Invoice id') }}:
+                        <b>{{ $lims_sale_data->id }} </b><br>
+                    </p>
+                </div>
+                <p>{{ trans('file.Date') }}:
+                    {{ date($general_setting->date_format, strtotime($lims_sale_data->created_at->toDateString())) }}<br>
 
-                    @if ($general_setting->invoice_format == 'gst' && $general_setting->state == 1)
-                        <tr>
-                            <td colspan="2">IGST</td>
-                            <td style="text-align:right">{{ number_format((float) $total_product_tax, 2, '.', '') }}
-                            </td>
-                        </tr>
-                    @elseif($general_setting->invoice_format == 'gst' && $general_setting->state == 2)
-                        <tr>
-                            <td colspan="2">SGST</td>
-                            <td style="text-align:right">
-                                {{ number_format((float) ($total_product_tax / 2), 2, '.', '') }}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">CGST</td>
-                            <td style="text-align:right">
-                                {{ number_format((float) ($total_product_tax / 2), 2, '.', '') }}</td>
-                        </tr>
-                    @endif
-                    @if ($lims_sale_data->order_tax)
-                        <tr>
-                            <th colspan="2" style="text-align:left">{{ trans('file.Order Tax') }}</th>
-                            <th style="text-align:right">
-                                {{ number_format((float) $lims_sale_data->order_tax, 2, '.', '') }}</th>
-                        </tr>
-                    @endif
-                    @if ($lims_sale_data->order_discount)
-                        <tr>
-                            <th colspan="2" style="text-align:left">{{ trans('file.Order Discount') }}</th>
-                            <th style="text-align:right">
-                                {{ number_format((float) $lims_sale_data->order_discount, 2, '.', '') }}</th>
-                        </tr>
-                    @endif
+                </p>
+                <table class="table-data">
+                    <tbody>
+                        <?php $total_product_tax = 0; ?>
+                        @foreach ($lims_product_sale_data as $key => $product_sale_data)
+                            <?php
+                            $lims_product_data = \App\Product::find($product_sale_data->product_id);
+                            if ($lims_product_data->category_id != $lims_pos_setting_data->printer_two_category_id) {
+                                continue;
+                            }
+                            if ($product_sale_data->variant_id) {
+                                $variant_data = \App\Variant::find($product_sale_data->variant_id);
+                                $product_name = $lims_product_data->name . ' [' . $variant_data->name . ']';
+                            } elseif ($product_sale_data->product_batch_id) {
+                                $product_batch_data = \App\ProductBatch::select('batch_no')->find($product_sale_data->product_batch_id);
+                                $product_name = $lims_product_data->name . ' [' . trans('file.Batch No') . ':' . $product_batch_data->batch_no . ']';
+                            } else {
+                                $product_name = $lims_product_data->name;
+                            }
 
-                </tbody>
-                <!-- </tfoot> -->
-            </table>
+                            if ($product_sale_data->imei_number) {
+                                $product_name .= '<br>' . trans('IMEI or Serial Numbers') . ': ' . $product_sale_data->imei_number;
+                            }
+                            ?>
+                            <tr>
+                                <td colspan="2">
+                                    {!! $product_name !!}
 
-            <div class="centered" style="margin:10px 0 50px">
-                <small>
-                    {{ trans('file.Developed By') }} ZifalaTech</small>
+
+                                </td>
+                                <td style="text-align:right;vertical-align:bottom">
+                                    {{ $product_sale_data->qty }} </td>
+                            </tr>
+                        @endforeach
+
+                        <!-- <tfoot> -->
+
+                        @if ($general_setting->invoice_format == 'gst' && $general_setting->state == 1)
+                            <tr>
+                                <td colspan="2">IGST</td>
+                                <td style="text-align:right">
+                                    {{ number_format((float) $total_product_tax, 2, '.', '') }}
+                                </td>
+                            </tr>
+                        @elseif($general_setting->invoice_format == 'gst' && $general_setting->state == 2)
+                            <tr>
+                                <td colspan="2">SGST</td>
+                                <td style="text-align:right">
+                                    {{ number_format((float) ($total_product_tax / 2), 2, '.', '') }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">CGST</td>
+                                <td style="text-align:right">
+                                    {{ number_format((float) ($total_product_tax / 2), 2, '.', '') }}</td>
+                            </tr>
+                        @endif
+                        @if ($lims_sale_data->order_tax)
+                            <tr>
+                                <th colspan="2" style="text-align:left">{{ trans('file.Order Tax') }}</th>
+                                <th style="text-align:right">
+                                    {{ number_format((float) $lims_sale_data->order_tax, 2, '.', '') }}</th>
+                            </tr>
+                        @endif
+                        @if ($lims_sale_data->order_discount)
+                            <tr>
+                                <th colspan="2" style="text-align:left">{{ trans('file.Order Discount') }}</th>
+                                <th style="text-align:right">
+                                    {{ number_format((float) $lims_sale_data->order_discount, 2, '.', '') }}</th>
+                            </tr>
+                        @endif
+
+                    </tbody>
+                    <!-- </tfoot> -->
+                </table>
+
+                <div class="centered" style="margin:10px 0 50px">
+                    <small>
+                        {{ trans('file.Developed By') }} ZifalaTech</small>
+                </div>
             </div>
-        </div>
+        @endif
+        {{-- Extra Invoice Three --}}
+        @if ($lims_pos_setting_data->printer_three_category_id != 0 && $cat_three)
+            <div class="break-after"></div>
+            <div class="extra-invoice" id="extra-invoice-three" style="display: none">
+                <div class="centered">
+
+
+                    <h2>{{ $lims_biller_data->company_name }}</h2>
+
+                    <p> {{ trans('file.Invoice id') }}:
+                        <b>{{ $lims_sale_data->id }} </b><br>
+                    </p>
+                </div>
+                <p>{{ trans('file.Date') }}:
+                    {{ date($general_setting->date_format, strtotime($lims_sale_data->created_at->toDateString())) }}<br>
+
+                </p>
+                <table class="table-data">
+                    <tbody>
+                        <?php $total_product_tax = 0; ?>
+                        @foreach ($lims_product_sale_data as $key => $product_sale_data)
+                            <?php
+                            $lims_product_data = \App\Product::find($product_sale_data->product_id);
+                            if ($lims_product_data->category_id != $lims_pos_setting_data->printer_three_category_id) {
+                                continue;
+                            }
+                            if ($product_sale_data->variant_id) {
+                                $variant_data = \App\Variant::find($product_sale_data->variant_id);
+                                $product_name = $lims_product_data->name . ' [' . $variant_data->name . ']';
+                            } elseif ($product_sale_data->product_batch_id) {
+                                $product_batch_data = \App\ProductBatch::select('batch_no')->find($product_sale_data->product_batch_id);
+                                $product_name = $lims_product_data->name . ' [' . trans('file.Batch No') . ':' . $product_batch_data->batch_no . ']';
+                            } else {
+                                $product_name = $lims_product_data->name;
+                            }
+
+                            if ($product_sale_data->imei_number) {
+                                $product_name .= '<br>' . trans('IMEI or Serial Numbers') . ': ' . $product_sale_data->imei_number;
+                            }
+                            ?>
+                            <tr>
+                                <td colspan="2">
+                                    {!! $product_name !!}
+
+
+                                </td>
+                                <td style="text-align:right;vertical-align:bottom">
+                                    {{ $product_sale_data->qty }} </td>
+                            </tr>
+                        @endforeach
+
+                        <!-- <tfoot> -->
+
+                        @if ($general_setting->invoice_format == 'gst' && $general_setting->state == 1)
+                            <tr>
+                                <td colspan="2">IGST</td>
+                                <td style="text-align:right">
+                                    {{ number_format((float) $total_product_tax, 2, '.', '') }}
+                                </td>
+                            </tr>
+                        @elseif($general_setting->invoice_format == 'gst' && $general_setting->state == 2)
+                            <tr>
+                                <td colspan="2">SGST</td>
+                                <td style="text-align:right">
+                                    {{ number_format((float) ($total_product_tax / 2), 2, '.', '') }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">CGST</td>
+                                <td style="text-align:right">
+                                    {{ number_format((float) ($total_product_tax / 2), 2, '.', '') }}</td>
+                            </tr>
+                        @endif
+                        @if ($lims_sale_data->order_tax)
+                            <tr>
+                                <th colspan="2" style="text-align:left">{{ trans('file.Order Tax') }}</th>
+                                <th style="text-align:right">
+                                    {{ number_format((float) $lims_sale_data->order_tax, 2, '.', '') }}</th>
+                            </tr>
+                        @endif
+                        @if ($lims_sale_data->order_discount)
+                            <tr>
+                                <th colspan="2" style="text-align:left">{{ trans('file.Order Discount') }}</th>
+                                <th style="text-align:right">
+                                    {{ number_format((float) $lims_sale_data->order_discount, 2, '.', '') }}</th>
+                            </tr>
+                        @endif
+
+                    </tbody>
+                    <!-- </tfoot> -->
+                </table>
+
+                <div class="centered" style="margin:10px 0 50px">
+                    <small>
+                        {{ trans('file.Developed By') }} ZifalaTech</small>
+                </div>
+            </div>
+        @endif
+
     </div>
 
     <script type="text/javascript">
